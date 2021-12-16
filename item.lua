@@ -1,4 +1,6 @@
 --item.lua
+-- https://wiki.factorio.com/Tutorial:Modding_tutorial/Gangsir#Overview
+-- https://lua-api.factorio.com/latest/index.htm
 
 local fireArmor = table.deepcopy(data.raw["armor"]["heavy-armor"]) -- copy the table that defines the heavy armor item into the fireArmor variable
 
