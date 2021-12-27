@@ -27,15 +27,22 @@ function update_gui_frame(player)
         type = "frame",
         caption = {""},
         name = "coypu-frame",
-        direction = "vertical"
+        direction = "horizontal"
     }
 
-	-- frame.location = {1000,5000} 
+q    frame.add{
+        type="sprite",
+        sprite="item/iron-ore"
+    }
 
     frame.add{
         type = "label",
-        caption = "Iron Ore 1 minute:" .. player.force.item_production_statistics.get_flow_count{name="iron-ore",output=False,precision_index=defines.flow_precision_index.one_minute}
+        style = "bold_label", 
+        caption = "Iron 1m " .. player.force.item_production_statistics.get_flow_count{name="iron-ore",output=False,precision_index=defines.flow_precision_index.one_minute}
     }
+
+
+    -- /c game.print(game.player.gui.is_valid_sprite_path("file/__core__/graphics/questionmark"))
 
     -- for k,v in pairs (player.force.item_production_statistics.output_counts) do
     	-- game.print(k)
