@@ -30,11 +30,13 @@ function update_gui_frame(player)
         direction = "horizontal"
     }
 
-q    frame.add{
-        type="sprite",
-        sprite="item/iron-ore"
+    frame.add{
+        type="sprite-button",
+        sprite="item/iron-ore",
+        style="coypu_small_button"
     }
 
+-- https://wiki.factorio.com/Rich_text
     frame.add{
         type = "label",
         style = "bold_label", 
