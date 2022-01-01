@@ -44,14 +44,20 @@ function update_gui_frame(player)
     }
 
 
-    -- /c game.print(game.player.gui.is_valid_sprite_path("file/__core__/graphics/questionmark"))
+    json = "{\"production\":" .. game.table_to_json(player.force.item_production_statistics.output_counts) .. ",\n"
+    json = json .. "\"fluid\":" .. game.table_to_json(player.force.fluid_production_statistics.output_counts) .. ",\n"
+    json = json .. "\"kills\":" .. game.table_to_json(player.force.kill_count_statistics.output_counts) .. ",\n"
+    json = json .. "\"build\":" .. game.table_to_json(player.force.entity_build_count_statistics.output_counts) .. ",\n"
+    json = json .. "}\n"
+    game.write_file("coypu.log", json, true, 1)
 
+    -- player.force.item_production_statistics.get_flow_count{name="iron-ore",output=False,precision_index=defines.flow_precision_index.one_minute} 
+
+    -- game.print(game.table_to_json(player.force.item_production_statistics.output_counts))
     -- for k,v in pairs (player.force.item_production_statistics.output_counts) do
-    	-- game.print(k)
+    --     game.print(k)
     -- end
 
- --    player.gui.top.add{type="label", name="greeting", caption="Hi"}
-	-- player.gui.top.greeting.caption = "Hello there!"
 end
 
 function refresh_gui()
@@ -66,6 +72,7 @@ local function on_init()
     for _, player in pairs(game.players) do
         update_gui_frame(player)
     end
+
 
 --     local tabbed_pane = game.player.gui.top.add{type="tabbed-pane"}
 -- local tab1 = tabbed_pane.add{type="tab", caption="Tab 1"}
