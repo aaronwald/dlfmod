@@ -30,12 +30,21 @@ function update_gui_frame(player)
         direction = "horizontal"
     }
 
-    frame.add{
+   frame.add{
         type="sprite-button",
         sprite="item/iron-ore",
-        style="coypu_small_button"
+        style="coypu_small_button",
+        name="killall"
     }
 
+   frame.add{
+        type="sprite-button",
+        sprite="item/copper-ore",
+        style="coypu_small_button",
+        name="killeverything"
+    }
+
+-- game.forces["enemy"].kill_all_units()
 -- https://wiki.factorio.com/Rich_text
     frame.add{
         type = "label",
@@ -47,9 +56,13 @@ function update_gui_frame(player)
     json = "{\"production\":" .. game.table_to_json(player.force.item_production_statistics.output_counts) .. ",\n"
     json = json .. "\"fluid\":" .. game.table_to_json(player.force.fluid_production_statistics.output_counts) .. ",\n"
     json = json .. "\"kills\":" .. game.table_to_json(player.force.kill_count_statistics.output_counts) .. ",\n"
-    json = json .. "\"build\":" .. game.table_to_json(player.force.entity_build_count_statistics.output_counts) .. ",\n"
+    json = json .. "\"build\":" .. game.table_to_json(player.force.entity_build_count_statistics.output_counts) .. "\n"
     json = json .. "}\n"
-    game.write_file("coypu.log", json, true, 1)
+    game.write_file("coypu_" .. game.tick .. ".json", json, true, 1)
+
+
+    last_tick = "" .. game.tick
+    game.write_file("coypu.tick", last_tick, false, 1)
 
     -- player.force.item_production_statistics.get_flow_count{name="iron-ore",output=False,precision_index=defines.flow_precision_index.one_minute} 
 
@@ -93,8 +106,26 @@ script.on_nth_tick(100,
 script.on_event(
 	defines.events.on_player_created,
 	function(event)
-	game.print('foo')
+	   game.print('foo')
 	end
+)
+
+script.on_event(
+    defines.events.on_gui_click,
+    function(event)
+        -- https://wiki.factorio.com/Console
+        if event.element.name == "killall" then
+            game.forces["enemy"].kill_all_units()
+        elseif event.element.name == "killeverything" then
+            for _, player in pairs(game.players) do
+                local surface=player.surface
+                for key, entity in pairs(surface.find_entities_filtered({force="enemy"})) do
+                    entity.destroy()
+                end
+            end
+        end
+        game.print('gui click' .. event.element.name)
+    end
 )
 
 script.on_init(on_init)
